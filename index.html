@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <title>Proyecto Integrador Parte 2</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <section class="my-3 hero is-primary">
+            <div class="hero-body">
+              <p class="title">Proyecto Integrador Parte 2</p>
+              <p class="subtitle">Alejandro Sánchez López</p>
+            </div>
+          </section>
+          <div class="box content">
+            <p class="subtitle is-4">Objetivo</p>
+            <p class="text">
+              Consiste en definir los elementos y el diseño de la solución web
+              que permita atender la situación o problemática descrita en la
+              primera parte del Proyecto integrador, determinando las pruebas
+              necesarias para garantizar su óptimo funcionamiento.
+            </p>
+          </div>
+          <div class="box">
+            <p class="subtitle is-4">
+              Definición de fuentes de datos a utilizar:
+            </p>
+            <p>
+              Todos los portales actualmente crean con un registró de usuarios a
+              través de la asignación de un número ID llamada <strong>ID_CuentaHabiente</strong>,
+              esto se puede usar como primary key. Este número no se repite en
+              ninguna plataforma, pero vive por separado en cada plataforma, son
+              bases separadas por cada plataforma.
+            </p>
+            <p class="my-2">Fuentes de datos a utilizar:</p>
+            <ul class="content">
+              <li>Primary Key: ID_CuentaHabiente</li>
+              <li>Fuente de datos – Sitio bbmundo</li>
+              <li>Fuente de datos – Sitio Suscripciones</li>
+              <li>Fuente de datos – Sitio Moi</li>
+              <li>Fuente de datos – Sitio MarthaDebayle</li>
+              <li>Fuente de datos – Sitio Thebeautyeffect</li>
+              <li>Fuente de datos – Micrositio Masterbbmundo</li>
+              <li>Fuente de datos – Micrositio MasterMoi</li>
+            </ul>
+          </div>
+
+          <div class="box">
+            <p class="subtitle is-4">
+              Procesos de extracción, transformación y carga de datos
+            </p>
+            <p class="my-2">Extracción y transformación:</p>
+            <p class="my-2">
+              Actualmente todas las bases de datos están realizadas en MySQL,
+              por lo tanto tenemos que migrar las tablas de MySQL a MongoDB.
+              Para esto utilizarenmos CSV
+            </p>
+            <p class="my-2">
+              Exportación de MySQL a CSV: Dentro de MySQL ejecutamos la
+              siguiente consulta para cada sitio que tenemos
+            </p>
+            <pre>
+              select * into outfile '/tmp/cuentahabientes.csv' FIELDS
+            
+              TERMINATED BY ',' LINES TERMINATED BY '\n' from
+            
+              bbmundo.cuentahabientes;</pre
+            >
+            <p class="my-2">
+              Importación a MongoDB: Para la importación usaremos la herramienta
+              nativa de MongoDB llamada mongoimport. Nos situaremos mediante la
+              consola en la ruta donde se ha exportado el fichero y le
+              indicaremos que use la base de datos nueva que ya debimos crear y
+              utilizaremos la colección que acabamos de exportar por sitio
+            </p>
+            <pre class="mt-2">
+            mongoimport -d cuentahabientes -c ID_CuentaHabiente
+            
+            --type csv --file cuentahabientes.csv –fields “ID_CuentaHabiente”</pre
+            >
+          </div>
+          <div class="box">
+            <p class="subtitle is-4">
+              Mecanismos e infraestructura para el almacenamiento y gestión de
+              datos
+            </p>
+            <p>
+              Como se habia mencionado previamente se utilizará un modelo no
+              relacional como lo es MongoDB. Esto mismo se almacenará en AWS, es
+              decir el Cluster de Mongo DB vivirá en Amazon Elastic Block Store
+              vinculados a los nodos de MongoDB
+            </p>
+          </div>
+          <div class="box">
+            <p class="subtitle is-4">Interfaz de usuario a utilizar</p>
+            <p>
+              Para solventar esta necesidad de consultar gráficamente la
+              información de los cuentahabientes se utilizará un CMS creado por
+              nosotros mismos realizado con el framework NEXT.JS basado en
+              React. En este llegarán todos los endpoints para consumo de
+              información realizados en Node con Express
+            </p>
+          </div>
+          <div class="box">
+            <p class="subtitle is-4">Mecanismos de seguridad</p>
+            <p>
+              Para la seguridad se utilizará todas las medidas que actualemnte
+              tiene AWS. El código vivirá en github y será respaldado a través
+              de git guardian. Las apis llevarán un tipo de autentificación
+              Bearer Token basado en JSON Web Token (JWT). El CSM contará con un
+              sistema de login y manejo de estados globales con Redux. El login
+              tendrá validación con Yup y se hará el formulario con Formik.
+            </p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Proyecto Integrador Parte 2</strong> by
+            <a href="https://alejandroslpz.com">Alejandro Sánchez López</a>
+            <p>Materia: Tecnologías de construcción de servicios web </p>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
